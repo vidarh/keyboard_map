@@ -35,6 +35,7 @@ class KeyboardMap
   SINGLE_KEY_EVENT = {
     "\t" => :tab,
     "\r" => :enter,
+    "\u001F" => Event.new(:_,:ctrl),
     "\u007F" => :backspace
   }.freeze
 
@@ -76,9 +77,18 @@ class KeyboardMap
     "201" => :end_paste,
   }.freeze
 
+  @@key_events = {}
+  def self.event(key,*modifiers)
+    e = key if key.kind_of?(Event)
+    e ||= Event.new(key,*modifiers)
+    k = e.to_sym
+    @@key_events[k] ||= e
+    @@key_events[k]
+  end
+
   # Map of simple/non-parameterised escape sequences to symbols
   ESCAPE_MAP = {
-    "\e[Z"    => Event.new(:tab,:shift),
+    "\e[Z"    => event(:tab,:shift),
     "\eOP"    => :f1,
     "\eOQ"    => :f2,
     "\eOR"    => :f3,
@@ -86,14 +96,6 @@ class KeyboardMap
   }.freeze
 
   CSI_FINAL_BYTE = 0x40..0x7e
-
-  @@key_events = {}
-  def self.event(key,*modifiers)
-    e = Event.new(key,*modifiers)
-    k = e.to_sym
-    @@key_events[k] ||= e
-    @@key_events[k]
-  end
 
   def meta(key)
     self.class.event(key,:meta)
