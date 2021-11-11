@@ -8,12 +8,12 @@ class KeyboardMap
   attr_reader :buf
 
   class Event
-    attr_reader :modifiers,:key
+    attr_reader :modifiers,:key, :args
 
-
-    def initialize(key,*modifiers)
+    def initialize(key, *modifiers, args: nil)
       @modifiers = Set[*modifiers.map(&:to_sym)]
       @key = key
+      @args = args
     end
 
     def to_sym
@@ -151,6 +151,8 @@ class KeyboardMap
       if key
         modifiers = map_modifiers(params[1])
       end
+    elsif final == "m" || final == "M" # Mouse reporting
+      return Event.new(final == "M" ? :mouse_down : :mouse_up, args: [params[0][1..-1].to_i, params[1].to_i, params[2].to_i])
     else
       key = CSI_BASIC_MAP[final]
       modifiers = map_modifiers(params[1]) if key && params.first == "1" && params.size == 2
