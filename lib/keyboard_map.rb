@@ -49,16 +49,19 @@ class KeyboardMap
     "E"    => :keypad_5,
     "F"    => :end,
     "H"    => :home,
-    "P"    => :f1,
+    "J"    => :ctrl_end,    # st reports this
+    "L"    => :ctrl_insert, # st reports this
+    "P"    => :delete,
     "Q"    => :f2,
     "R"    => :f3,
-    "S"    => :f4,
+    "S"    => :f4
   }.freeze
 
   # \e[{parameter1}{;...}~ from parameter1 => key
   CSI_TILDE_MAP = {
     "2"   => :insert,
     "3"   => :delete,
+    "4"   => :end,        # st reports this
     "5"   => :page_up,
     "6"   => :page_down,
     "11"  => :f1,
@@ -92,7 +95,9 @@ class KeyboardMap
     "\eOP"    => :f1,
     "\eOQ"    => :f2,
     "\eOR"    => :f3,
-    "\eOS"    => :f4
+    "\eOS"    => :f4,
+    "\e[M"    => event(:delete,:ctrl), # st reports this
+    "\e[4h"   => :insert       # st reports this
   }.freeze
 
   CSI_FINAL_BYTE = 0x40..0x7e
