@@ -111,7 +111,12 @@ class KeyboardMap
   CSI_FINAL_BYTE = 0x40..0x7e
 
   def meta(key)
-    self.class.event(key,:meta)
+    mod = [:meta]
+    if key.ord < 32
+      mod << :ctrl
+      key = (key.ord+96).chr
+    end
+    self.class.event(key,*mod)
   end
 
   ESC = "\e"
@@ -122,9 +127,13 @@ class KeyboardMap
     @state = :text
   end
 
-  def call(input)
+  def finish
+    run || (@state == :esc ? :esc : nil)
+  end
+      
+  def call(input, opt = nil)
     @buf << input
-    run
+    opt == :finished ? finish : run
   end
 
   def map_escape(seq)
@@ -197,7 +206,7 @@ class KeyboardMap
     elsif ch == "\t"
       @state = :text
       @tmp = ""
-      return meta(:tab)
+      return event(:tab, :meta)
     elsif ch == "\e"
       return :esc
     end
