@@ -5,7 +5,7 @@ require "keyboard_map/version"
 require 'set'
 
 class KeyboardMap
-  attr_reader :buf
+  attr_reader :buf, :state
 
   class Event
     attr_reader :modifiers,:key, :args
