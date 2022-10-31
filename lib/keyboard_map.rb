@@ -16,8 +16,12 @@ class KeyboardMap
       @args = args
     end
 
+    def to_s
+      (modifiers.to_a.sort << key).join("_")
+    end
+
     def to_sym
-      (modifiers.to_a.sort << key).join("_").to_sym
+      to_s.to_sym
     end
 
     def ==(ev)
