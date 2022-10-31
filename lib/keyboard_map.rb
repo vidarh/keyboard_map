@@ -93,6 +93,10 @@ class KeyboardMap
     @@key_events[k]
   end
 
+  def event(key, *modifiers)
+    self.class.event(key,*modifiers)
+  end
+
   # Map of simple/non-parameterised escape sequences to symbols
   ESCAPE_MAP = {
     "\e[Z"    => event(:tab,:shift),
