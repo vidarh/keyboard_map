@@ -105,14 +105,17 @@ class KeyboardMap
     "\eOR"    => :f3,
     "\eOS"    => :f4,
     "\e[M"    => event(:delete,:ctrl), # st reports this
-    "\e[4h"   => :insert       # st reports this
+    "\e[4h"   => :insert,       # st reports this
+    "\e\x7f" => event(:backspace, :meta),
   }.freeze
 
   CSI_FINAL_BYTE = 0x40..0x7e
 
   def meta(key)
     mod = [:meta]
-    if key.ord < 32
+    if SINGLE_KEY_EVENT[key]
+      key = SINGLE_KEY_EVENT[key]
+    elsif key.ord < 32
       mod << :ctrl
       key = (key.ord+96).chr
     end

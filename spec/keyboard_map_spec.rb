@@ -34,6 +34,10 @@ RSpec.describe KeyboardMap do
       expect(kb.call("\e\e")).to eq([:esc])
     end
 
+    specify 'if passed "\e\x7f", it returns an array containing something comparable to :meta_backspace' do
+      expect(kb.call("\e\x7f")).to eq([:meta_backspace])
+    end
+    
     specify 'if passed "\e[Z" it returns something that matches [:shift_tab]' do
       expect(kb.call("\e[Z")).to eq([:shift_tab])
     end
