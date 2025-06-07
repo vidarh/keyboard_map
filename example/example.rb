@@ -33,7 +33,7 @@ IO.console.raw do
       IO.select([$stdin])
       retry
     end
-    print "\rRaw:    #{ch.inspect}\n\r"
+    print "\rRaw:    #{ch.inspect} first char: #{ch[0].ord}\n\r"
     r = kb.call(ch, :finished)
     r.each do |ev|
       case ev
