@@ -1,7 +1,7 @@
 
-$: << File.dirname(__FILE__)+"/lib"
+$: << File.dirname(__FILE__)+"/../lib"
 require 'io/console'
-require_relative '../lib/keyboard_map'
+require 'keyboard_map'
 
 kb = KeyboardMap.new
 
